@@ -21,7 +21,7 @@ const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 // Initialize Firebase Admin SDK
 // This connects to the same Firebase project as the dash-app to ensure
 // tickets from both sources end up in the same database
-const serviceAccount = require('./dash-24e87-firebase-adminsdk-fbsvc-f43b3eddc8.json');
+const serviceAccount = require('./firebase-key.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -154,7 +154,7 @@ async function handleTicketCreation(psid, session) {
     console.log(`📝 Issue summary for ${psid}: ${issue}`);
 
     // Use Gemini to classify the issue to one of the roles (matching dash-app logic exactly)
-    const prompt = `Classify the following customer service issue into one of these categories: "Developer", "Customer Service", or "Finance". If none apply, use "General". Only return the category name.
+    const prompt = `Classify the following customer service issue into one of these categories: \"Developer\", \"Customer Service\", or \"Finance\". If none apply, use \"General\". Only return the category name.
     Issue: ${issue}`;
     
     const result = await model.generateContent(prompt);

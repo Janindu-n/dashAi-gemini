@@ -44,11 +44,22 @@ Only ask one question at a time and wait for the user's reply.
 
 Start by greeting the customer and asking your first diagnostic question.`;
 
+app.get('/', (req, res) => {
+  res.status(200).send('Hello! The Messenger Bot webhook is active.');
+});
+
+
 // Webhook verification
 app.get('/webhook', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
+
+  console.log('Webhook verification request received:');
+  console.log(`  hub.mode: ${mode}`);
+  console.log(`  hub.verify_token: ${token}`);
+  console.log(`  hub.challenge: ${challenge}`);
+  console.log(`  Expected VERIFY_TOKEN: ${VERIFY_TOKEN}`);
   
   return (mode === 'subscribe' && token === VERIFY_TOKEN)
     ? res.status(200).send(challenge)
@@ -59,8 +70,7 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', async (req, res) => {
   if (req.body.object !== 'page') return res.sendStatus(404);
   
-  req.body.entry.forEach(({ messaging })
-    =>
+  req.body.entry.forEach(({ messaging }) =>
     messaging.forEach(event => onMessage(event))
   );
   res.sendStatus(200);
@@ -204,3 +214,4 @@ async function fbSend(psid, text) {
 app.listen(PORT, () =>
   console.log(`🚀 Bot running on http://localhost:${PORT}`)
 );
+

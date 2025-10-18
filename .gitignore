@@ -1,8 +1,2 @@
-# Dependencies
-node_modules
-
-# Environment variables
-.env
-
-# Service account keys
-*.json
+dash-frontend/dash-app/dash-24e87-firebase-adminsdk-fbsvc-740d59f4aa.json
+dash-frontend-firebase/dash-app/firebase-key.json
